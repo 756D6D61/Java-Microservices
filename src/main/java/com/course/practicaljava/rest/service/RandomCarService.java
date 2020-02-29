@@ -1,10 +1,13 @@
 package com.course.practicaljava.rest.service;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 import org.springframework.stereotype.Service;
 
 import com.course.practicaljava.rest.domain.Car;
+import com.course.practicaljava.rest.domain.Engine;
+import com.course.practicaljava.rest.domain.Tire;
 import com.course.practicaljava.util.RandomDateUtil;
 
 @Service
@@ -24,7 +27,31 @@ public class RandomCarService implements CarService {
 		car.setPrice(5000 + random.nextInt(7001));
 		car.setFirstReleaseDate(RandomDateUtil.generateRandomDate());
 
-		return null;
+		int randomCount = random.nextInt(ADDITIONAL_FEATURES.size());
+		ArrayList<String> additionalFeatures = new ArrayList<String>();
+		for (int i = 1; i <= randomCount; i++) {
+			additionalFeatures.add(ADDITIONAL_FEATURES.get(i - 1));
+		}
+		car.setAdditionalFeatures(additionalFeatures);
+
+		int randomFuelType = FUEL_TYPES.get(random.nextInt(FUEL_TYPES).size());
+		int randomHorsepower = 100 + random.nextInt(121);
+		Engine randomEngine = new Engine(randomFuelType, randomHorsepower);
+
+		ArrayList<Tire> randomCompatibleTires = new ArrayList<Tire>();
+		for (int i = 0; i < 3; i++) {
+			String tireManufacturer = TIRE_MANUFACTURERS.get(random.nextInt(TIRE_MANUFACTURERS.size()));
+			int tireSize = 15 + random.nextInt(3);
+			int tirePrice = 200 + random.nextInt(201);
+
+			Tire randomTire = new Tire(tireManufacturer, tireSize, tirePrice);
+			randomCompatibleTires.add(randomTire);
+
+		}
+
+		car.setCompatibleTires(randomCompatibleTires);
+
+		return car;
 	}
 
 }
